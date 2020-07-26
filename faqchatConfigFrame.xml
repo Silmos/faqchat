@@ -1,0 +1,27 @@
+ <Ui ...>
+ <Script file="faqchatConfigFrame.lua"/>
+ <Frame name="faqchatConfigFrame" 
+    toplevel="true" parent="UIParent" frameStrata="DIALOG" 
+    hidden="true" enableMouse="true">
+	<Size><AbsDimension x="260" y="280"/></Size>
+	<Anchors><Anchor point="CENTER"/></Anchors>
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" 
+		edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+		<TileSize><AbsValue val="32"/></TileSize>
+		<EdgeSize><AbsValue val="32"/></EdgeSize>
+        <Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="Close">
+			<Anchors>
+				<Anchor point="BOTTOMRIGHT">
+				<Offset><AbsDimension x="-12" y="16"/></Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick> faqchatConfigFrame:Hide(); </OnClick>
+			</Scripts>
+            </Button>
+	</Backdrop>
+ </Frame>
+ </Ui>

@@ -3,5 +3,6 @@
 ## Notes: Reacts to Buzzwords in Chat
 ## Author: Silmos
 ## Version: 0.0.1
-
+## SavedVariables: faqchatConfig
+faqchatConfigFrame.xml
 faqchat.lua
