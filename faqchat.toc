@@ -1,0 +1,7 @@
+## Interface: 11305
+## Title: FAQChat
+## Notes: Reacts to Buzzwords in Chat
+## Author: Silmos
+## Version: 0.0.1
+
+faqchat.lua
