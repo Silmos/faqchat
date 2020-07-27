@@ -8,7 +8,7 @@ SLASH_FAQCHAT3 = "/faq"
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
-version = "v 1.0.0"
+version = "v 1.0.1"
 
 function frame:OnEvent(event, arg1)
     if event == "ADDON_LOADED" and arg1 == "faqchat" then
@@ -22,15 +22,24 @@ local frame2 = CreateFrame("Frame");
 frame2:RegisterEvent("CHAT_MSG_WHISPER")
 frame2:RegisterEvent("CHAT_MSG_GUILD")
 frame2:SetScript("OnEvent", function(e, event, mess, sender)
+    local playername, realm = UnitFullName("player");
+    local combined = playername.."-"..realm;
+    print(playername);
+    print(realm);
+    print (combined);
     for key, value in pairs(faqchatConfig.buzz) do
         if key == nil or key == "" then
             --print("Ignore Nil")
         else
-            if event == "CHAT_MSG_WHISPER" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkwhisper[key] == true then
-                SendChatMessage(value ,"WHISPER" ,"language" ,sender);
-            end
-            if event == "CHAT_MSG_GUILD" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkguild[key] == true then
-                SendChatMessage(value ,"GUILD");
+            if (faqchatConfig.respondyourself == true and sender == combined) or (faqchatConfig.respondyourself == false and sender ~= combined ) then
+                if event == "CHAT_MSG_WHISPER" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkwhisper[key] == true then
+                    SendChatMessage(value ,"WHISPER" ,"language" ,sender);
+                end
+                if event == "CHAT_MSG_GUILD" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkguild[key] == true then
+                    SendChatMessage(value ,"GUILD");
+                end
+            else
+                -- do nutting
             end
         end
     end
@@ -87,8 +96,17 @@ function RenderOptions()
     -- Guildchat Checkbox
     GuildchatCheckbox = CreateFrame("CheckButton", "GuildchatCheckBox", ConfigFrame, "ChatConfigCheckButtonTemplate");
 	GuildchatCheckbox:SetPoint("TOPLEFT", 425, -145)
-    GuildchatCheckbox:SetText("Guildchat");
     getglobal(GuildchatCheckbox:GetName() .. 'Text'):SetText("Guild Chat");
+    -- RespondToYourself Checkbox
+    RespondCheckbox = CreateFrame("CheckButton", "RespondCheckbox", ConfigFrame, "ChatConfigCheckButtonTemplate");
+	RespondCheckbox:SetPoint("TOPLEFT", 425, -185)
+    RespondCheckbox.tooltip = "Activate so you respond to your own message. Disable so there are no loops.";
+    getglobal(RespondCheckbox:GetName() .. 'Text'):SetText("Respond to yourself");
+    RespondCheckbox:SetScript("OnClick", RespondYourself);
+    if faqchatConfig.respondyourself == true then
+        RespondCheckbox:SetChecked(true);
+    end
+
     -- Save Button
     local SaveButton = CreateFrame("Button", "SaveButton", ConfigFrame, "OptionsButtonTemplate");
     SaveButton:SetPoint("TOPLEFT", 200, -30);
@@ -176,6 +194,10 @@ function DeleteProfile()
     InputTextBox:SetText("");
     WhisperCheckbox:SetChecked(false);
     GuildchatCheckbox:SetChecked(false);
+end
+
+function RespondYourself()
+    faqchatConfig.respondyourself = RespondCheckbox:GetChecked();
 end
 
 SlashCmdList["FAQCHAT"] = OpenConfig;
