@@ -106,7 +106,6 @@ function RenderOptions()
 	L_UIDropDownMenu_Initialize(BuzzProfileDropDown, BuzzProfileDropDownInitialize);
 	L_UIDropDownMenu_SetWidth(BuzzProfileDropDown, 150);
 	L_UIDropDownMenu_SetButtonWidth(BuzzProfileDropDown, 124);
-	L_UIDropDownMenu_SetSelectedValue(BuzzProfileDropDown, GTFO.Settings.SoundChannel);
     L_UIDropDownMenu_JustifyText(BuzzProfileDropDown, "LEFT");
 
 end
