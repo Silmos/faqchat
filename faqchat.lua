@@ -79,6 +79,7 @@ function RenderOptions()
     InputTextBox:SetBackdropColor(0, 0, 0)
     InputTextBox:SetBackdropBorderColor(0.3, 0.3, 0.3)
     InputTextBox:SetFont("Fonts\\FRIZQT__.TTF", 12)
+    InputTextBox:SetMaxBytes(255)
     -- Whisper Chechbox
     WhisperCheckbox = CreateFrame("CheckButton", "WhisperCheckBox", ConfigFrame, "ChatConfigCheckButtonTemplate");
 	WhisperCheckbox:SetPoint("TOPLEFT", 425, -125)
