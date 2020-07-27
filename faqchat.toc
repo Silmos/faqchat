@@ -2,7 +2,7 @@
 ## Title: FAQChat
 ## Notes: Reacts to Buzzwords in Chat
 ## Author: Silmos
-## Version: 0.0.1
+## Version: 1.0.0
 ## DefaultState: Enabled
 ## SavedVariables: faqchatConfig
 Libs\LibStub\LibStub.lua
