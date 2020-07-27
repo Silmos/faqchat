@@ -3,6 +3,8 @@
 ## Notes: Reacts to Buzzwords in Chat
 ## Author: Silmos
 ## Version: 0.0.1
+## DefaultState: Enabled
 ## SavedVariables: faqchatConfig
-faqchatConfigFrame.xml
+Libs\LibStub\LibStub.lua
+Libs\LibUIDropDownMenu\LibUIDropDownMenu.xml
 faqchat.lua
