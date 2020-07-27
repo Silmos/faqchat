@@ -24,9 +24,6 @@ frame2:RegisterEvent("CHAT_MSG_GUILD")
 frame2:SetScript("OnEvent", function(e, event, mess, sender)
     local playername, realm = UnitFullName("player");
     local combined = playername.."-"..realm;
-    print(playername);
-    print(realm);
-    print (combined);
     for key, value in pairs(faqchatConfig.buzz) do
         if key == nil or key == "" then
             --print("Ignore Nil")
