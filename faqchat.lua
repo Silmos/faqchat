@@ -8,7 +8,7 @@ SLASH_FAQCHAT3 = "/faq"
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
-version = "v 1.0.1"
+version = "v 1.0.2"
 
 function frame:OnEvent(event, arg1)
     if event == "ADDON_LOADED" and arg1 == "faqchat" then
@@ -28,7 +28,7 @@ frame2:SetScript("OnEvent", function(e, event, mess, sender)
         if key == nil or key == "" then
             --print("Ignore Nil")
         else
-            if (faqchatConfig.respondyourself == true and sender == combined) or (faqchatConfig.respondyourself == false and sender ~= combined ) then
+            if (faqchatConfig.respondyourself == true and sender == combined) or (faqchatConfig.respondyourself == false and sender ~= combined ) or (faqchatConfig.respondyourself == true and sender ~= combined ) then
                 if event == "CHAT_MSG_WHISPER" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkwhisper[key] == true then
                     SendChatMessage(value ,"WHISPER" ,"language" ,sender);
                 end
