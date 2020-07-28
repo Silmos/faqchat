@@ -1,6 +1,4 @@
 -- Badly programmed by Silmos (I know its bad, dont judge me pls)
--- Global
-faqchatConfig = {}
 
 SLASH_FAQCHAT1 = "/faqchat"
 SLASH_FAQCHAT2 = "/faqc"
@@ -13,7 +11,8 @@ version = "v 1.0.3"
 function frame:OnEvent(event, arg1)
     if event == "ADDON_LOADED" and arg1 == "faqchat" then
         print("FAQChat "..version.. " by Silmos [LOADED]");
-        RenderOptions();
+        FAQ_CheckForGlobalVariables();
+        FAQ_RenderOptions();
     end
 end
 frame:SetScript("OnEvent", frame.OnEvent);
@@ -44,12 +43,33 @@ frame2:SetScript("OnEvent", function(e, event, mess, sender)
     --print(sender);
 end)
 
+-- Check if tables in global variables already exist and if no then create them
+function FAQ_CheckForGlobalVariables()
+    if faqchatConfig == nil then
+        faqchatConfig = {}
+    end
+    if faqchatConfig.buzz == nil then
+        faqchatConfig.buzz = {}
+    end
+    if faqchatConfig.checkwhisper == nil then
+        faqchatConfig.checkwhisper = {}
+    end
+    if faqchatConfig.checkguild == nil then
+        faqchatConfig.checkguild = {}
+    end
+    if faqchatConfig.checkrespond == nil then
+        faqchatConfig.checkrespond = {}
+    end
+end
+    
+
+
 local function OpenConfig()
     InterfaceOptionsFrame_Show();
     InterfaceOptionsFrame_OpenToCategory("FAQChat");
 end
 
-function RenderOptions()
+function FAQ_RenderOptions()
     -- Main Config Frame
     local ConfigFrame = CreateFrame("FRAME","Config");
     ConfigFrame.name = "FAQChat";
@@ -123,11 +143,6 @@ function RenderOptions()
     L_UIDropDownMenu_JustifyText(BuzzProfileDropDown, "LEFT");
 
 end
-
-faqchatConfig.buzz = {}
-faqchatConfig.checkwhisper = {}
-faqchatConfig.checkguild = {}
-faqchatConfig.checkrespond = {}
 
 function CreateBuzzProfile()
     --print("Created new profile");
