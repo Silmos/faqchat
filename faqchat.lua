@@ -185,6 +185,7 @@ function DeleteProfile()
     faqchatConfig.buzz[LoadID] = nil
     faqchatConfig.checkwhisper[LoadID] = nil
     faqchatConfig.checkguild[LoadID] = nil
+    faqchatConfig.checkrespond[LoadID] = nil
     InputBuzzProfile:SetText("");
     InputTextBox:SetText("");
     WhisperCheckbox:SetChecked(false);
