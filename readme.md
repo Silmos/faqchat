@@ -1,9 +1,8 @@
 # FAQChat
-### v1.0.1
 
 ## 1. What is FAQChat?
 
- FAQChat is a chat addon, which you can use to create your own triggers for buzzwords to respond automatically. Currently it works for whispers and guild chat only. This addon was made for my guild so you can respond to commands like !aq or !discord in guildchat.
+ FAQChat is a chat addon for WoW Classic, which you can use to create your own triggers for buzzwords to respond automatically. Currently it works for whispers and guild chat only. This addon was made for my guild so you can respond to commands like !aq or !discord in guildchat.
 
 ## 2. Example
 
@@ -18,7 +17,10 @@ Attention: There is a checkbox if the buzzword should also respond to your own m
 - /faqchat
 -> These commands all do the same, it just opens the option interface (Interface > Addons > FAQChat).
 
-## 4. Credits 
+## 4. Download
+https://www.curseforge.com/wow/addons/faqchat
+
+## 5. Credits 
 
 Programmed (badly) by myself
 - This is my first wow addon and my first LUA experience in general
