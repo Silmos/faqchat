@@ -6,7 +6,7 @@ SLASH_FAQCHAT3 = "/faq"
 
 local frame = CreateFrame("Frame");
 frame:RegisterEvent("ADDON_LOADED");
-version = "v 1.0.3"
+version = "v 1.0.4"
 
 function frame:OnEvent(event, arg1)
     if event == "ADDON_LOADED" and arg1 == "faqchat" then
@@ -28,11 +28,21 @@ frame2:SetScript("OnEvent", function(e, event, mess, sender)
             --print("Ignore Nil")
         else
             if (faqchatConfig.checkrespond[key] == true and sender == combined) or (faqchatConfig.checkrespond[key] == false and sender ~= combined ) or (faqchatConfig.checkrespond[key] == true and sender ~= combined ) then
-                if event == "CHAT_MSG_WHISPER" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkwhisper[key] == true then
-                    SendChatMessage(value ,"WHISPER" ,"language" ,sender);
+                if event == "CHAT_MSG_WHISPER" and faqchatConfig.checkwhisper[key] == true then
+                    if faqchatConfig.matchwhole[key] == true and string.match(mess:lower(), "%f[%a]" .. key:lower() .. "%f[%A]") then
+                        SendChatMessage(value ,"WHISPER" ,"language" ,sender);
+                        print("Matched whole")
+                    elseif faqchatConfig.matchwhole[key] == false and string.match(mess:lower(), key:lower()) then
+                        SendChatMessage(value ,"WHISPER" ,"language" ,sender);
+                        print("Normal Match")
+                    end
                 end
-                if event == "CHAT_MSG_GUILD" and string.match(mess:lower(), key:lower()) and faqchatConfig.checkguild[key] == true then
-                    SendChatMessage(value ,"GUILD");
+                if event == "CHAT_MSG_GUILD" and faqchatConfig.checkguild[key] == true then
+                    if faqchatConfig.matchwhole[key] == true and string.match(mess:lower(), "%s" .. key:lower() .. "%s") then
+                        SendChatMessage(value ,"GUILD");
+                    elseif faqchatConfig.matchwhole[key] == false and string.match(mess:lower(), key:lower()) then
+                        SendChatMessage(value ,"GUILD");
+                    end
                 end
             else
                 -- do nutting
@@ -59,6 +69,9 @@ function FAQ_CheckForGlobalVariables()
     end
     if faqchatConfig.checkrespond == nil then
         faqchatConfig.checkrespond = {}
+    end
+    if faqchatConfig.matchwhole == nil then
+        faqchatConfig.matchwhole = {}
     end
 end
     
@@ -119,6 +132,11 @@ function FAQ_RenderOptions()
 	RespondCheckbox:SetPoint("TOPLEFT", 425, -165)
     RespondCheckbox.tooltip = "Activate so you respond to your own message. This is saved for every buzzword separately";
     getglobal(RespondCheckbox:GetName() .. 'Text'):SetText("Respond to yourself");
+    -- MatchButton Checkbox
+    MatchButton = CreateFrame("CheckButton", "MatchBox", ConfigFrame, "ChatConfigCheckButtonTemplate");
+    MatchButton:SetPoint("TOPLEFT", 425, -185)
+    MatchButton.tooltip = "Only trigger if the whole word matches";
+    getglobal(MatchButton:GetName() .. 'Text'):SetText("Match whole word");
     -- Save Button
     local SaveButton = CreateFrame("Button", "SaveButton", ConfigFrame, "OptionsButtonTemplate");
     SaveButton:SetPoint("TOPLEFT", 200, -30);
@@ -147,9 +165,10 @@ end
 function CreateBuzzProfile()
     --print("Created new profile");
     buzzid = InputBuzzProfile:GetText();
+    buzztext = InputTextBox:GetText();
     --print(buzzid);
-    if buzzid == nil or buzzid == "" then
-        message("Buzzword is empty")
+    if buzzid == nil or buzzid == "" or buzztext == nil or buzztext == "" then
+        message("Buzzword or textbox is empty")
     else
         faqchatConfig.buzz[buzzid] = InputTextBox:GetText();
         --print(faqchatConfig.buzz[buzzid]);
@@ -159,6 +178,7 @@ function CreateBuzzProfile()
         --print(faqchatConfig.checkguild[buzzid]);
         --print("Done");
         faqchatConfig.checkrespond[buzzid] = RespondCheckbox:GetChecked();
+        faqchatConfig.matchwhole[buzzid] = MatchButton:GetChecked();        
         BuzzProfileDropDownInitialize();
         InputBuzzProfile:SetText("");
         InputTextBox:SetText("");
@@ -187,11 +207,16 @@ end
 function LoadBuzzProfile()
     local LoadID = L_UIDropDownMenu_GetText(BuzzProfileDropDown)
     --print(LoadID)
+    if LoadID == nil or LoadID == "" then
+        message("Auswahl ist leer")
+    else
     InputBuzzProfile:SetText(LoadID);
     InputTextBox:SetText(faqchatConfig.buzz[LoadID]);
     WhisperCheckbox:SetChecked(faqchatConfig.checkwhisper[LoadID]);
     GuildchatCheckbox:SetChecked(faqchatConfig.checkguild[LoadID]);
     RespondCheckbox:SetChecked(faqchatConfig.checkrespond[LoadID]);
+    MatchButton:SetChecked(faqchatConfig.matchwhole[LoadID]);
+    end
 end
 
 function DeleteProfile()
@@ -201,11 +226,14 @@ function DeleteProfile()
     faqchatConfig.checkwhisper[LoadID] = nil
     faqchatConfig.checkguild[LoadID] = nil
     faqchatConfig.checkrespond[LoadID] = nil
+    faqchatConfig.matchwhole[LoadID] = nil
     InputBuzzProfile:SetText("");
     InputTextBox:SetText("");
     WhisperCheckbox:SetChecked(false);
     GuildchatCheckbox:SetChecked(false);
     RespondCheckbox:SetChecked(false);
+    MatchButton:SetChecked(false);
+	L_UIDropDownMenu_SetText(BuzzProfileDropDown,"");
 end
 
 SlashCmdList["FAQCHAT"] = OpenConfig;
